@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Set up your own Notion Second Brain and CEO Command Center with Claude: one template, one set of instructions, four prompts.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Second Brain Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one centered reading column on an underwater teal plate; setup = checklist steps, prompts = copy cards */
+:root{
+  --bg:#0A2A33;--bg2:#06202A;--surf:#0E3B4A;--surf2:#0B3340;
+  --line:rgba(127,242,220,.12);--line2:rgba(127,242,220,.28);
+  --txt:#F7F2EA;--soft:#D6E2DF;--muted:#93B3B3;
+  --mint:#7FF2DC;--pink:#FF9DC6;--lav:#E4CCFF;--gold:#F0CF86;
+  --grad:linear-gradient(100deg,#E4CCFF 0%,#FF9DC6 46%,#7FF2DC 100%);
+  --pill:rgba(8,40,52,.82);
+  --se:'Playfair Display',Georgia,'Times New Roman',serif;
+  --sa:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sa);color:var(--txt);background:var(--bg);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse at 100% 10%,rgba(255,157,198,.08),transparent 45%),radial-gradient(ellipse at 0% 60%,rgba(127,242,220,.07),transparent 45%)}
+a{color:var(--mint)}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-weight:600;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.gs{font-family:var(--se);font-style:italic;font-weight:400;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+h1,h2,h3{font-family:var(--se);font-weight:500;text-wrap:balance;margin:0}
+
+/* hero */
+.hero{text-align:center;padding-block:56px 24px}
+.hero h1{font-size:clamp(38px,7vw,64px);line-height:1.05;margin-top:14px}
+.tag{color:var(--soft);font-size:clamp(16px,2vw,19px);max-width:600px;margin:16px auto 0}
+.vid-lbl{margin:30px 0 12px;font-weight:600;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--mint)}
+.vid{position:relative;display:grid;place-items:center;width:100%;max-width:720px;margin:0 auto;aspect-ratio:16/9;border-radius:22px;overflow:hidden;border:1px dashed var(--line2);
+  background:radial-gradient(ellipse at 30% 30%,rgba(228,204,255,.18),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(127,242,220,.16),transparent 55%),var(--surf2)}
+.vid .play{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:var(--grad);opacity:.55}
+.vid .play svg{width:32px;height:32px;margin-left:5px}
+.vid .soon{position:absolute;left:0;right:0;bottom:16px;font-size:13px;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.chips span{font-weight:500;font-size:13px;padding:7px 14px;border-radius:999px;background:var(--pill);border:1.5px solid rgba(127,242,220,.42)}
+
+/* progress */
+.prog{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(6,32,42,.92);backdrop-filter:blur(8px);border-block:1px solid var(--line);margin-top:28px}
+.prog .wrap{display:flex;align-items:center;gap:14px;padding-block:12px}
+.prog b{font-weight:600;font-size:13px;white-space:nowrap}
+.bar{flex:1;height:8px;border-radius:99px;background:rgba(127,242,220,.12);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .4s}
+.prog small{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+section{padding-block:44px 8px}
+section>h2{font-size:clamp(28px,4.4vw,38px);margin-top:8px}
+section>p.lead{color:var(--soft);margin:10px 0 0;max-width:62ch}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px;border-radius:18px;background:var(--surf2);border:1px solid var(--line)}
+.step.done{border-color:rgba(127,242,220,.45)}
+.step input{appearance:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--line2);margin:2px 0 0;cursor:pointer;display:grid;place-items:center;flex:none}
+.step input:checked{background:var(--grad);border-color:transparent}
+.step input:checked::after{content:"";width:9px;height:14px;border:solid #0A2A33;border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.step input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+.step h3{font-size:21px}
+.step .body{min-width:0}
+.step p,.step li{color:var(--soft);font-size:15px}
+.step p{margin:6px 0 0}
+.step ol{margin:8px 0 0;padding-left:20px}
+.step .when{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--gold);margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;text-decoration:none;font-family:var(--sa);font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;color:#0A2A33;background:var(--grad);border:0;cursor:pointer}
+.btn.ghost{color:var(--txt);background:var(--pill);border:1.5px solid rgba(127,242,220,.42)}
+.btn:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+
+/* prompt cards */
+.prompts{display:flex;flex-direction:column;gap:18px;margin-top:24px}
+.card{border-radius:18px;background:var(--surf2);border:1px solid var(--line);overflow:hidden}
+.card header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px 0;flex-wrap:wrap}
+.card header div{min-width:0}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.card h3{font-size:22px;margin-top:2px}
+.card .use{color:var(--soft);font-size:14.5px;padding:6px 20px 0;margin:0}
+pre{margin:14px 0 0;padding:16px 20px 18px;background:var(--bg2);border-top:1px solid var(--line);white-space:pre-wrap;word-wrap:break-word;font-family:var(--sa);font-size:14px;line-height:1.6;color:var(--txt);max-height:340px;overflow:auto}
+pre .fill{color:var(--pink);font-weight:500}
+.copy{flex:none;font-family:var(--sa);font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;color:#0A2A33;background:var(--grad);border:0}
+.copy.ok{background:var(--mint)}
+.copy:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+
+/* rhythm */
+.rhythm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.rhythm div{padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--surf2)}
+.rhythm b{display:block;font-family:var(--se);font-weight:500;font-size:19px}
+.rhythm span{display:block;color:var(--soft);font-size:14.5px;margin-top:4px}
+.rhythm em{font-style:normal;color:var(--gold);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding-block:14px}
+summary{cursor:pointer;font-weight:600;font-size:15.5px}
+details p{color:var(--soft);font-size:15px;margin:8px 0 0}
+footer{padding-block:48px 56px;text-align:center;color:var(--muted);font-size:13px}
+footer .gs{font-size:22px}
+
+@media (max-width:640px){.rhythm{grid-template-columns:1fr}.step{padding:16px;gap:12px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<header class="hero wrap">
+  <div class="eyebrow">Spiritual Business Skool · Premium</div>
+  <h1>Your Second Brain + <span class="gs">CEO Command Center</span></h1>
+  <p class="tag">One Notion template, one set of Claude instructions and four prompts. About 30 minutes of setup, then 10 minutes every Friday.</p>
+  <div class="vid-lbl">Watch the video guide</div>
+  <div class="vid" role="img" aria-label="Video guide coming soon">
+    <div class="play"><svg viewBox="0 0 24 24" fill="#0A2A33"><path d="M7 4.5v15l13-7.5z"/></svg></div>
+    <div class="soon">The 3-minute walkthrough is coming</div>
+  </div>
+  <div class="chips"><span>Claude Pro</span><span>A free Notion account</span><span>No code, no extra apps</span></div>
+</header>
+
+<div class="prog" aria-live="polite">
+  <div class="wrap"><b>Your setup</b><div class="bar"><i id="barfill"></i></div><small id="count">0 of 6 done</small></div>
+</div>
+
+<main class="wrap">
+
+<section id="setup">
+  <div class="eyebrow">Part 1 · Set it up once</div>
+  <h2>Three steps, <span class="gs">one time</span></h2>
+  <p class="lead">Tick each one as you go. Your ticks stay on this device.</p>
+  <div class="steps">
+
+    <label class="step" for="s1">
+      <input type="checkbox" id="s1" data-step>
+      <div class="body">
+        <h3>Duplicate the template</h3>
+        <p>Open the template and click <b>Duplicate</b> (top right). Pick your own workspace. You now have a Second Brain with 8 databases, 6 pages about you and a Command Center home page with charts.</p>
+        <a class="btn" id="tpl" href="https://www.notion.so/4226bb8d5b088145837bd2e82c53fb70" target="_blank" rel="noopener">Open the Notion template</a>
+      </div>
+    </label>
+
+    <label class="step" for="s2">
+      <input type="checkbox" id="s2" data-step>
+      <div class="body">
+        <h3>Connect Notion to Claude</h3>
+        <ol>
+          <li>In Claude, open <b>Settings → Connectors</b>.</li>
+          <li>Find <b>Notion</b>, click <b>Connect</b> and sign in.</li>
+          <li>When Notion asks which pages Claude can see, pick <b>My Second Brain + CEO Command Center</b>.</li>
+        </ol>
+        <p>Test it: start a new chat and type <i>"Search my Notion for Rules for AI."</i> If Claude finds it, you're connected.</p>
+      </div>
+    </label>
+
+    <label class="step" for="s3">
+      <input type="checkbox" id="s3" data-step>
+      <div class="body">
+        <h3>Make a "Second Brain" project in Claude</h3>
+        <ol>
+          <li>In Claude click <b>Projects → New project</b> and name it <b>Second Brain</b>.</li>
+          <li>Open <b>Instructions</b>, paste the Keeper instructions below and save.</li>
+        </ol>
+        <p>Run all four prompts inside this project. The instructions tell Claude where everything goes, so "log this" works in any chat in the project.</p>
+      </div>
+    </label>
+  </div>
+
+  <div class="prompts">
+    <article class="card">
+      <header><div><div class="k">Paste into project instructions</div><h3>The Second Brain Keeper</h3></div><button class="copy" type="button" data-copy="keeper">Copy</button></header>
+      <p class="use">This is what makes Claude file things in the right place, check your prices before writing and never invent numbers.</p>
+<pre id="keeper">You keep my Second Brain in Notion up to date. It's one home page called "My Second Brain + CEO Command Center" with pages about me and eight databases. It is the one source of truth about me and my business.
+
+EVERY TIME, FIRST:
+1. Search Notion for "Rules for AI" and follow it. My own rules at the bottom of that page win over anything here.
+2. Search for the database you need by name and fetch it so you have its current fields. Databases: Tasks, Ideas, Notes, Content Library, Numbers, Offers, Clients, Wins. Pages: About Me, My Business, Voice & Brand, Audience, Goals & Priorities.
+
+WHERE THINGS GO:
+- Something to do → Tasks. Name starts with a verb. Status "Not started", Priority (🔥 This week / Next / Someday), Area, Due if there's a date, Source "Claude".
+- Something I might make → Ideas. Type, Status "New", Hook if there is one.
+- Something I published → Content Library. Title, Platform, Published date, Hook, Link, Status "Live". Views, Comments, Saves, Leads only if I gave the numbers.
+- A decision, call note, brain dump or weekly review → Notes. One-line Summary, full text inside the page.
+- Weekly numbers → Numbers. One row per week. Leave blank, never 0, anything you don't have.
+- A new or changed price → Offers, plus a Notes page (type Decision) saying what changed and when.
+- A new client or a change → Clients (first names).
+- A client result or testimonial → Wins. Their exact words. Tick "Can share publicly" only if I say so.
+
+HOW:
+- Search before you add. If it's already there, update it instead of adding a second one.
+- Never invent numbers, results, quotes or prices. If something is missing, leave it blank or ask me one short question.
+- A brain dump becomes many rows: tasks to Tasks, ideas to Ideas, decisions to Notes. Save the raw dump as one Notes page too.
+- Prices come from Offers only.
+- Before writing anything for me (posts, captions, emails, offers, sales pages), read Voice & Brand, Audience and Offers, and pull proof from Wins. Only wins marked "Can share publicly" get a name.
+- When you file something, finish with one line: "Logged: [what] → [database]".</pre>
+    </article>
+  </div>
+</section>
+
+<section id="prompts">
+  <div class="eyebrow">Part 2 · Fill it and use it</div>
+  <h2>The four <span class="gs">prompts</span></h2>
+  <p class="lead">Paste each one into a new chat in your Second Brain project. Swap anything in <span style="color:var(--pink)">pink</span> for your own.</p>
+  <div class="prompts">
+
+    <article class="card">
+      <header><div><div class="k">Prompt 1 · Once · about 20 min</div><h3>Fill my brain</h3></div><button class="copy" type="button" data-copy="p1">Copy</button></header>
+      <p class="use">Claude interviews you one question at a time and writes your answers into About Me, My Business, Offers, Audience and Goals.</p>
+<pre id="p1">You're setting up my Second Brain in Notion. First search Notion for "Rules for AI" and read it. Then open my pages About Me, My Business, Audience and Goals & Priorities, and my Offers database.
+
+Interview me to fill them in:
+- Ask one question at a time and wait for my answer.
+- Go in this order: About Me, My Business, Offers, Audience, Goals & Priorities.
+- If my answer is vague, ask one follow-up to get the specific version: numbers, names, real examples.
+- Keep my words. Don't polish them into marketing copy.
+- After each page, write it into Notion (replace the [bracket] placeholders), show me a 3-line summary and ask if anything is off before you move on.
+- Add each of my offers as its own row in Offers, with price and billing.
+- Never invent anything. If I skip a question, leave it blank.
+
+Start with your first question.</pre>
+    </article>
+
+    <article class="card">
+      <header><div><div class="k">Prompt 2 · Once · 5 min</div><h3>Find my voice</h3></div><button class="copy" type="button" data-copy="p2">Copy</button></header>
+      <p class="use">Paste 5 of your real captions or one transcript of you talking. Claude writes your Voice & Brand page from how you actually sound.</p>
+<pre id="p2">Open my Voice & Brand page in Notion. Below is <span class="fill">[5 of my captions / a transcript of me talking]</span>.
+
+Study how I actually sound: my tone, sentence length, words I repeat, how I open and close, what I never say. Fill in Voice & Brand with what you find, using my real lines as the examples.
+
+Then write one test caption about <span class="fill">[a topic I post about]</span> in my voice, ask me what's off, and update the page with my corrections.
+
+<span class="fill">[PASTE HERE]</span></pre>
+    </article>
+
+    <article class="card">
+      <header><div><div class="k">Prompt 3 · Whenever your head is full</div><h3>Brain dump</h3></div><button class="copy" type="button" data-copy="p3">Copy</button></header>
+      <p class="use">Type or voice-note everything in your head. Claude turns it into tasks, ideas and decisions and tells you what to do first.</p>
+<pre id="p3">Brain dump incoming. Sort everything into my Second Brain in Notion:
+- Anything I need to do → Tasks (start with a verb, pick a priority and an area)
+- Anything I might make or try → Ideas
+- Any decision I've made → Notes, type Decision
+- Save the whole dump as one Notes page, type Brain dump
+
+Search before adding so nothing doubles up. Then show me what you filed as a short list, and tell me the 3 tasks you'd mark 🔥 This week and why.
+
+<span class="fill">[DUMP HERE]</span></pre>
+    </article>
+
+    <article class="card">
+      <header><div><div class="k">Prompt 4 · Every Friday · 10 min</div><h3>Friday CEO review</h3></div><button class="copy" type="button" data-copy="p4">Copy</button></header>
+      <p class="use">Screenshot your analytics (Instagram, TikTok, YouTube, Skool, Stripe, whatever you use) and attach them. This fills your Command Center charts.</p>
+<pre id="p4">It's my Friday CEO review. I've attached screenshots of this week's analytics.
+
+1. Read every number off the screenshots and list them back to me. Wait for me to confirm.
+2. Add a row to Numbers for this week.
+3. Update this week's posts in Content Library with views, comments, saves and leads where the screenshots show them. Add any post that isn't there yet.
+4. Compare with last week's Numbers row. Tell me what went up, what went down, and the one post that brought in the most leads.
+5. Check my Tasks marked 🔥 This week: what got done and what didn't.
+6. Name the one thing in my way and suggest next week's top 3 (one of them fixes that). When I say yes, update Goals & Priorities and move my tasks.
+7. Save it all as a Notes page, type Weekly review.
+
+Numbers first. No pep talk.</pre>
+    </article>
+  </div>
+
+  <div class="steps">
+    <label class="step" for="s4"><input type="checkbox" id="s4" data-step><div class="body"><h3>I ran Prompt 1</h3><p>About Me, My Business, Offers, Audience and Goals are filled in.</p></div></label>
+    <label class="step" for="s5"><input type="checkbox" id="s5" data-step><div class="body"><h3>I ran Prompt 2</h3><p>Voice & Brand sounds like me.</p></div></label>
+    <label class="step" for="s6"><input type="checkbox" id="s6" data-step><div class="body"><h3>I put my first Friday review on the calendar</h3><p>A recurring 10-minute slot every Friday, called "CEO review".</p></div></label>
+  </div>
+</section>
+
+<section id="rhythm">
+  <div class="eyebrow">Part 3 · Keep it alive</div>
+  <h2>Your <span class="gs">rhythm</span></h2>
+  <div class="rhythm">
+    <div><em>Any time</em><b>"Log this"</b><span>After you post, decide, finish a call or get a win, say "log this" in your project and paste it.</span></div>
+    <div><em>When it's loud</em><b>Brain dump</b><span>Prompt 3. Out of your head, into Tasks and Ideas, top 3 picked for you.</span></div>
+    <div><em>Friday</em><b>CEO review</b><span>Prompt 4. Screenshots in, numbers logged, next week's top 3 out.</span></div>
+  </div>
+</section>
+
+<section id="help">
+  <div class="eyebrow">If you get stuck</div>
+  <h2>Quick <span class="gs">fixes</span></h2>
+  <div style="margin-top:14px">
+    <details><summary>Claude says it can't find my Second Brain</summary><p>Notion only shows Claude the pages you allowed. Go to Settings → Connectors → Notion in Claude, reconnect, and tick "My Second Brain + CEO Command Center". If you duplicated it twice, delete the extra copy.</p></details>
+    <details><summary>Claude filed something twice</summary><p>Say "you added that twice, delete the duplicate in [database]". If it keeps happening, check the Keeper instructions are saved in your project.</p></details>
+    <details><summary>My charts are empty</summary><p>The charts fill from the Numbers and Content Library databases. Run Prompt 4 once with screenshots and they'll appear. The revenue line needs two Fridays to draw a line.</p></details>
+    <details><summary>Can I add my own pages or databases?</summary><p>Yes. Add them inside the home page, then add one line to Rules for AI telling Claude what goes there.</p></details>
+    <details><summary>Do I need Claude Pro?</summary><p>Yes. Connectors and projects need a paid Claude plan. Notion's free plan is enough.</p></details>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <div class="gs">There's no one right way.</div>
+  <p>There's only your way and consistency. · Spiritual Business Skool</p>
+</footer>
+
+<script>
+(function(){
+  var KEY='sbk-steps-v1';
+  var boxes=[].slice.call(document.querySelectorAll('[data-step]'));
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
+  function render(){
+    var n=0;
+    boxes.forEach(function(b){b.closest('.step').classList.toggle('done',b.checked);if(b.checked)n++});
+    document.getElementById('barfill').style.width=(n/boxes.length*100)+'%';
+    document.getElementById('count').textContent=n+' of '+boxes.length+' done';
+  }
+  boxes.forEach(function(b){
+    b.checked=!!saved[b.id];
+    b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}render()});
+  });
+  render();
+
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var el=document.getElementById(btn.getAttribute('data-copy'));
+      var text=el.innerText;
+      function done(){btn.textContent='Copied';btn.classList.add('ok');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('ok')},1800)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected: press Ctrl/Cmd+C'}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback)}else{fallback()}
+    });
+  });
+})();
+</script>
+</body></html>
